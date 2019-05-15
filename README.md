@@ -1,14 +1,15 @@
 # Basic Sample Business Network
 
-> This is the "Hello World" of Hyperledger Composer samples, which demonstrates the core functionality of Hyperledger Composer by changing the value of an asset.
+> My diploma project on Hyperledger Fabric
 
 This business network defines:
 
 **Participant**
-`SampleParticipant`
+`Person`
+`UniversityEmployee`
 
 **Asset**
-`SampleAsset`
+`Document`
 
 **Transaction**
 `SampleTransaction`
@@ -20,25 +21,58 @@ SampleAssets are owned by a SampleParticipant, and the value property on a Sampl
 
 To test this Business Network Definition in the **Test** tab:
 
-Create a `SampleParticipant` participant:
+Create a `University` participant:
 
 ```
 {
-  "$class": "org.example.basic.SampleParticipant",
-  "participantId": "Toby",
-  "firstName": "Tobias",
-  "lastName": "Hunter"
+  "$class": "org.example.basic.SampleTransaction",
+  "asset": "resource:org.example.basic.Document#2626",
+  "newValue": "AltSTU"
 }
 ```
 
-Create a `SampleAsset` asset:
+Create a `UniversityEmployee` participant:
 
 ```
 {
-  "$class": "org.example.basic.SampleAsset",
-  "assetId": "assetId:1",
-  "owner": "resource:org.example.basic.SampleParticipant#Toby",
-  "value": "original value"
+  "$class": "org.example.basic.UniversityEmployee",
+  "university": "resource:org.example.basic.University#8476",
+  "position": "TEACHER",
+  "personId": "6117",
+  "name": "Ivan",
+  "lastName": "Ivanov"
+}
+```
+
+Create a `Document` asset:
+
+```
+{
+  "$class": "org.example.basic.Document",
+  "documentId": "8485",
+  "applicant": "resource:org.example.basic.UniversityEmployee#0260",
+  "exportingBank": "resource:org.example.basic.University#5494",
+  "rules": [
+    {
+      "$class": "org.example.basic.Rule",
+      "ruleId": "Aliqua duis.",
+      "ruleText": "Esse exercitation in."
+    }
+  ],
+  "documentDetails": {
+    "$class": "org.example.basic.DocumentDetails",
+    "date": "11.05.2019",
+    "number": 43770,
+    "name": "Veniam."
+  },
+  "evidence": [
+    "Nostrud do tempor."
+  ],
+  "approval": [
+    "resource:org.example.basic.UniversityEmployee#1384"
+  ],
+  "status": "AWAITING_APPROVAL",
+  "type": "ORDER"
 }
 ```
 
