@@ -15,7 +15,7 @@
 /**
  * Sample business network definition.
  */
-namespace org.example.basic
+namespace org.example.doc
 
 enum DocumentStatus {
   o AWAITING_APPROVAL
@@ -83,4 +83,48 @@ event SampleEvent {
   --> Document asset
   o String oldValue
   o String newValue
+}
+
+transaction InitialApplication {
+  o String letterId
+  --> UniversityEmployee applicant
+  --> UniversityEmployee beneficiary
+  o Rule[] rules
+  o DocumentDetails documentDetails
+}
+
+event InitialApplicationEvent {
+  --> Document doc
+}
+
+transaction Approve {
+  --> Document doc
+  --> Person approvingParty
+}
+
+event ApproveEvent {
+  --> Document doc
+  --> Person approvingParty
+}
+
+transaction Reject {
+  --> Document doc
+  o String closeReason
+}
+
+event RejectEvent {
+  --> Document doc
+  o String closeReason
+}
+
+transaction SuggestChanges {
+  --> Document doc
+  o Rule[] rules
+  --> Person suggestingParty
+}
+
+event SuggestChangesEvent {
+  --> Document doc
+  o Rule[] rules
+  --> Person suggestingParty
 }
