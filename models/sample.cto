@@ -1,0 +1,86 @@
+/*
+ * Licensed under the Apache License, Version 2.0 (the "License");
+ * you may not use this file except in compliance with the License.
+ * You may obtain a copy of the License at
+ *
+ * http://www.apache.org/licenses/LICENSE-2.0
+ *
+ * Unless required by applicable law or agreed to in writing, software
+ * distributed under the License is distributed on an "AS IS" BASIS,
+ * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+ * See the License for the specific language governing permissions and
+ * limitations under the License.
+ */
+
+/**
+ * Sample business network definition.
+ */
+namespace org.example.basic
+
+enum DocumentStatus {
+  o AWAITING_APPROVAL
+  o APPROVED
+  o REJECTED
+  o REJECTED_WITH_COMMENT
+}
+enum DocumentType {
+  o ORDER
+  o STATEMENT
+  o DECREE
+}
+enum Position {
+  o STUDENT
+  o TEACHER
+  o HEAD_OF_DEPARTMENT
+  o DEAN
+  o RECTOR
+}
+
+participant University identified by universityID {
+  o String universityID
+  o String name
+}
+abstract participant Person identified by personId {
+  o String personId
+  o String name
+  o String lastName
+}
+
+participant UniversityEmployee extends Person {
+  --> University university
+  o Position position
+}
+// CONCEPTS
+concept Rule {
+  o String ruleId
+  o String ruleText
+}
+concept DocumentDetails {
+  o String date
+  o Integer number
+  o String name
+}
+
+asset Document identified by documentId {
+  o String documentId
+  --> UniversityEmployee applicant
+  --> University exportingBank
+  o Rule[] rules
+  o DocumentDetails documentDetails
+  o String [] evidence
+  --> UniversityEmployee [] approval
+  o DocumentStatus status
+  o DocumentType type
+  o String closeReason optional
+}
+
+transaction SampleTransaction {
+  --> Document asset
+  o String newValue
+}
+
+event SampleEvent {
+  --> Document asset
+  o String oldValue
+  o String newValue
+}
