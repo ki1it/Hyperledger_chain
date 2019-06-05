@@ -17,61 +17,60 @@
  */
 namespace org.example.doc
 
-enum DocumentStatus {
+// ENUMS
+enum DocStatus {
   o AWAITING_APPROVAL
   o APPROVED
+  o PARTLY_APPROVED
+  o RECEIVED
+  o CLOSED
   o REJECTED
-  o REJECTED_WITH_COMMENT
-}
-enum DocumentType {
-  o ORDER
-  o STATEMENT
-  o DECREE
-}
-enum Position {
-  o STUDENT
-  o TEACHER
-  o HEAD_OF_DEPARTMENT
-  o DEAN
-  o RECTOR
 }
 
+// ASSETS
+asset Document identified by documentId {
+  o String documentId
+  --> Person applicant
+  --> University university
+  o String date
+  o String text
+  o String hash optional
+  o String [] evidence optional
+  --> Person [] approval
+  o DocStatus status
+  o String closeReason optional
+}
+
+// PARTICIPANTS
 participant University identified by universityID {
   o String universityID
   o String name
 }
+
 abstract participant Person identified by personId {
   o String personId
   o String name
-  o String lastName
-}
-
-participant UniversityEmployee extends Person {
+  o String lastName optional
+  o Integer level
   --> University university
-  o Position position
-}
-// CONCEPTS
-concept Rule {
-  o String ruleId
-  o String ruleText
-}
-concept DocumentDetails {
-  o String date
-  o Integer number
-  o String name
 }
 
-asset Document identified by documentId {
-  o String documentId
-  --> UniversityEmployee applicant
-  --> University exportingBank
-  o Rule[] rules
-  o DocumentDetails documentDetails
-  o String [] evidence
-  --> UniversityEmployee [] approval
-  o DocumentStatus status
-  o DocumentType type
-  o String closeReason optional
+participant Dean extends Person {
+  o String faculty
+}
+
+participant Head_of_department extends Person {
+  o String department
+}
+
+participant Teacher extends Person {
+  o String faculty
+}
+
+participant RECTOR extends Person {
+}
+
+participant STUDENT extends Person {
 }
 
 transaction SampleTransaction {
