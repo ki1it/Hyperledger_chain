@@ -70,10 +70,10 @@ participant Teacher extends Person {
   o String faculty
 }
 
-participant RECTOR extends Person {
+participant Rector extends Person {
 }
 
-participant STUDENT extends Person {
+participant Student extends Person {
 }
 
 // CONCEPTS
