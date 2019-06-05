@@ -11,13 +11,14 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-
-/**
- * Sample business network definition.
- */
-namespace org.example.doc
+ namespace org.example.doc
 
 // ENUMS
+
+enum DocType {
+  o ORDER_OF_EXPULSION
+  o ORDER_TO_PRACTICE
+}
 enum DocStatus {
   o AWAITING_APPROVAL
   o APPROVED
@@ -37,7 +38,9 @@ asset Document identified by documentId {
   o String hash optional
   o String [] evidence optional
   --> Person [] approval
+  o Change[] changes
   o DocStatus status
+  o DocType type
   o String closeReason optional
 }
 
@@ -73,23 +76,22 @@ participant RECTOR extends Person {
 participant STUDENT extends Person {
 }
 
-transaction SampleTransaction {
-  --> Document asset
-  o String newValue
+// CONCEPTS
+concept Change {
+  o String changeId
+  o String changeText
 }
 
-event SampleEvent {
-  --> Document asset
-  o String oldValue
-  o String newValue
-}
 
+// TRANSACTIONS + EVENTS
 transaction InitialApplication {
-  o String letterId
-  --> UniversityEmployee applicant
-  --> UniversityEmployee beneficiary
-  o Rule[] rules
-  o DocumentDetails documentDetails
+  o String documentId
+  --> Person applicant
+  --> University university
+  o String date
+  o String text
+  o String hash optional
+  o Change[] changes
 }
 
 event InitialApplicationEvent {
@@ -118,12 +120,23 @@ event RejectEvent {
 
 transaction SuggestChanges {
   --> Document doc
-  o Rule[] rules
+  o Change[] changes
   --> Person suggestingParty
 }
 
 event SuggestChangesEvent {
   --> Document doc
-  o Rule[] rules
+  o Change[] changes
   --> Person suggestingParty
 }
+
+transaction Close {
+  --> Document doc
+  o String closeReason
+}
+
+event CloseEvent {
+  --> Document doc
+  o String closeReason
+}
+
