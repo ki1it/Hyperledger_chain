@@ -35,6 +35,9 @@ asset Document identified by documentId {
   --> University university
   o String date
   o String text
+  o Integer countSigners
+  o String signersOrder
+  o String url optional
   o String hash optional
   o String [] evidence optional
   --> Person [] approval
@@ -84,7 +87,7 @@ concept Change {
 
 
 // TRANSACTIONS + EVENTS
-transaction InitialApplication {
+transaction InitialApplicationDocument {
   o String documentId
   --> Person applicant
   --> University university
@@ -92,9 +95,10 @@ transaction InitialApplication {
   o String text
   o String hash optional
   o Change[] changes
+  o DocType type
 }
 
-event InitialApplicationEvent {
+event InitialApplicationDocumentEvent {
   --> Document doc
 }
 
@@ -139,4 +143,5 @@ event CloseEvent {
   --> Document doc
   o String closeReason
 }
+
 
